@@ -1,0 +1,12 @@
+host:
+  world: basalt_demo
+  model-chunk-x: 0
+  model-chunk-z: 0
+  play-chunk-x: 64
+  play-chunk-z: 0
+  floor-y: 64
+run:
+  max-runs: 8
+  max-players: 4
+  monster-health: 6
+  return-delay-seconds: 8
