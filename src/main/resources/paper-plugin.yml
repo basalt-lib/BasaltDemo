@@ -1,0 +1,18 @@
+name: BasaltDemo
+version: '${version}'
+main: tlm.dev.basalt.demo.DemoPlugin
+api-version: '1.21.11'
+description: An instanced dungeon built on the Basalt API
+dependencies:
+  server:
+    BasaltCore:
+      load: BEFORE
+      required: true
+      join-classpath: true
+permissions:
+  basalt.demo.play:
+    description: Start, join, leave and look at dungeon runs
+    default: true
+  basalt.demo.admin:
+    description: Manage the dungeon model and act for other players
+    default: op
