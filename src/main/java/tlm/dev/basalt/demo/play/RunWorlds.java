@@ -110,10 +110,11 @@ public final class RunWorlds implements Lifecycle {
         if (closing != null) {
             closing.cancel();
         }
-        VirtualWorld world = worldOfRun.remove(run);
+        VirtualWorld world = worldOfRun.get(run);
         if (world != null) {
-            runOfWorld.remove(world.id());
             world.close();
+            worldOfRun.remove(run);
+            runOfWorld.remove(world.id());
         }
     }
 
