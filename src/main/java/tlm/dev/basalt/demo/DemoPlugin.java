@@ -1,16 +1,24 @@
 package tlm.dev.basalt.demo;
 
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
 import tlm.dev.basalt.api.Basalt;
 import tlm.dev.basalt.api.BasaltProvider;
+import tlm.dev.basalt.demo.command.DungeonCommand;
+import tlm.dev.basalt.demo.command.ModelOrders;
 import tlm.dev.basalt.demo.config.DemoFiles;
 import tlm.dev.basalt.demo.config.DemoSettings;
 import tlm.dev.basalt.demo.host.HostWorld;
+import tlm.dev.basalt.demo.host.ModelCommands;
 import tlm.dev.basalt.demo.host.ModelPlan;
 import tlm.dev.basalt.demo.host.ModelService;
 import tlm.dev.basalt.demo.layout.DefaultLayout;
 import tlm.dev.basalt.demo.layout.DungeonLayout;
 import tlm.dev.basalt.demo.lifecycle.LifecycleManager;
+import tlm.dev.basalt.demo.message.Messages;
+import tlm.dev.basalt.demo.run.RunRegistry;
+
+import java.util.UUID;
 
 public final class DemoPlugin extends JavaPlugin {
 
@@ -22,11 +30,14 @@ public final class DemoPlugin extends JavaPlugin {
         DemoFiles files = new DemoFiles(getDataPath(), this::getResource, getLogger());
         files.reload();
         DemoSettings settings = files.settings();
+        Messages messages = new Messages(files.messages());
         DungeonLayout layout = DefaultLayout.create();
         ModelPlan plan = new ModelPlan(layout.size(), point -> layout.blockAt(point).key(), layout.exit(), layout.spawn());
 
+        RunRegistry book = new RunRegistry(settings.run(), UUID::randomUUID);
         HostWorld host = new HostWorld(settings.host(), plan, getLogger());
         ModelService model = new ModelService(basalt, host, plan, getLogger());
+        ModelCommands modelCommands = new ModelCommands(model, messages, book);
 
         lifecycle = new LifecycleManager(getLogger());
         lifecycle.add(host);
@@ -36,6 +47,11 @@ public final class DemoPlugin extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+
+        DungeonCommand command = new DungeonCommand(
+                new ModelOrders(modelCommands::visit, modelCommands::capture, modelCommands::rebuild),
+                messages);
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> event.registrar().register(command.build()));
         getLogger().info("BasaltDemo " + getPluginMeta().getVersion() + " runs on Basalt " + basalt.version());
     }
 
