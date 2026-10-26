@@ -76,6 +76,10 @@ public final class RunWorlds implements Lifecycle {
         return location(arena.marks().spawn());
     }
 
+    public int monsterCount() {
+        return arena.marks().monsters().size();
+    }
+
     public Optional<UUID> runOf(VirtualWorld world) {
         return Optional.ofNullable(runOfWorld.get(world.id()));
     }
