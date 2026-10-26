@@ -10,6 +10,11 @@
 - Virtual zombies: the last kill opens the door, breaking the gold block ends the run
 - Players go back to where they were in the real world
 
+## Showcase
+
+<p align="center"><a href="https://www.youtube.com/watch?v=KCYVns9mYfQ"><img src="assets/showcase.jpg" width="640" alt="Basalt showcase video"></a></p>
+<p align="center"><a href="https://www.youtube.com/watch?v=KCYVns9mYfQ">Watch the showcase on YouTube</a></p>
+
 ## Try it
 
 Needs Paper 1.21.11 and [BasaltCore](https://github.com/basalt-lib/BasaltCore), with its API in your local Maven repository. Build with `./gradlew build` (JDK 25), put `build/libs/BasaltDemo-0.1.0-SNAPSHOT.jar` in `plugins/`.
