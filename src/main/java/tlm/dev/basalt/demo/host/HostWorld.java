@@ -4,11 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameRules;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.plugin.Plugin;
 import tlm.dev.basalt.demo.config.HostSettings;
 import tlm.dev.basalt.demo.lifecycle.Lifecycle;
 import tlm.dev.basalt.demo.position.BlockBox;
-
-import java.util.logging.Logger;
 
 public final class HostWorld implements Lifecycle {
 
@@ -16,13 +15,13 @@ public final class HostWorld implements Lifecycle {
 
     private final HostSettings settings;
     private final ModelPlan plan;
-    private final Logger logger;
+    private final Plugin plugin;
     private World world;
 
-    public HostWorld(HostSettings settings, ModelPlan plan, Logger logger) {
+    public HostWorld(HostSettings settings, ModelPlan plan, Plugin plugin) {
         this.settings = settings;
         this.plan = plan;
-        this.logger = logger;
+        this.plugin = plugin;
     }
 
     @Override
@@ -49,8 +48,14 @@ public final class HostWorld implements Lifecycle {
         world.setTime(NOON);
         world.setStorm(false);
         world.setThundering(false);
-        logger.info("Host world " + world.getName() + " ready: model from " + modelBox().min()
-                + ", runs from " + playBox().min());
+        BlockBox play = playBox();
+        for (int chunkX = play.min().x() >> 4; chunkX <= play.max().x() >> 4; chunkX++) {
+            for (int chunkZ = play.min().z() >> 4; chunkZ <= play.max().z() >> 4; chunkZ++) {
+                world.addPluginChunkTicket(chunkX, chunkZ, plugin);
+            }
+        }
+        plugin.getLogger().info("Host world " + world.getName() + " ready: model from " + modelBox().min()
+                + ", runs from " + play.min() + ", the play area kept loaded");
     }
 
     @Override

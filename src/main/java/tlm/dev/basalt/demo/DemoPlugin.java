@@ -52,7 +52,7 @@ public final class DemoPlugin extends JavaPlugin {
         ModelPlan plan = new ModelPlan(layout.size(), point -> layout.blockAt(point).key(), layout.exit(), layout.spawn());
 
         RunRegistry book = new RunRegistry(settings.run(), UUID::randomUUID);
-        HostWorld host = new HostWorld(settings.host(), plan, getLogger());
+        HostWorld host = new HostWorld(settings.host(), plan, this);
         ModelService model = new ModelService(basalt, host, plan, getLogger());
         ModelCommands modelCommands = new ModelCommands(model, messages, book);
 
