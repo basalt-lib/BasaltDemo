@@ -4,6 +4,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import tlm.dev.basalt.demo.command.DungeonCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,8 +47,9 @@ class PluginDescriptorTest {
     }
 
     @Test
-    void declaresThePlayAndAdminPermissions() {
-        assertEquals("true", descriptor.getString("permissions/basalt.demo.play/default"));
-        assertEquals("op", descriptor.getString("permissions/basalt.demo.admin/default"));
+    void declaresThePermissionsTheCommandChecks() {
+        assertEquals("true", descriptor.getString("permissions/" + DungeonCommand.PLAY + "/default"));
+        assertEquals("op", descriptor.getString("permissions/" + DungeonCommand.ADMIN + "/default"));
+        assertEquals(2, descriptor.getConfigurationSection("permissions").getKeys(false).size());
     }
 }
