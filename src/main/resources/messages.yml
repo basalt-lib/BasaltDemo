@@ -1,5 +1,54 @@
 player:
   needed: "<red>Name a player: the console is not one.</red>"
+  invalid: "<red><name> is not a player name.</red>"
+  unknown: "<red><name> is not online.</red>"
+run:
+  already: "<red><player> is already in a dungeon run.</red>"
+start:
+  started: "<green>Your dungeon run starts. Clear the <zombies> zombies to open the iron door.</green>"
+  done: "<gray>Started a dungeon run for <player>.</gray>"
+  too-many: "<red>All <max> dungeon runs are taken, try again later.</red>"
+  failed: "<red>The dungeon could not open: <reason></red>"
+  entry-refused: "<red>The server refused to move <player> into the dungeon.</red>"
+join:
+  joined: "<green>You joined the dungeon run of <leader>.</green>"
+  arrived: "<gray><player> joined the run.</gray>"
+  done: "<gray>Moved <player> into the run of <leader>.</gray>"
+  no-run: "<red><player> is not in a dungeon run.</red>"
+  full: "<red>The run of <leader> already has <max> players.</red>"
+  finished: "<red>The run of <leader> is over.</red>"
+leave:
+  left: "<gray>You left the dungeon run.</gray>"
+  gone: "<gray><player> left the run.</gray>"
+  done: "<gray><player> left the dungeon run.</gray>"
+  not-in-run: "<red><player> is not in a dungeon run.</red>"
+return:
+  back: "<gray>Back in the real world.</gray>"
+monster:
+  name: "<red>Dungeon Zombie</red>"
+  down: "<gray>A zombie falls, <zombies> left.</gray>"
+door:
+  opened: "<green>The iron door opens. Break the gold block to finish.</green>"
+exit:
+  locked: "<red>The gold block holds until every zombie is down.</red>"
+build:
+  refused: "<red>You cannot build in the dungeon.</red>"
+finish:
+  title: "<gold>Dungeon cleared</gold>"
+  subtitle: "<yellow><time></yellow>"
+  message: "<green>Dungeon cleared in <time>. Back to the real world in <delay> s.</green>"
+list:
+  header: "<gold><runs> dungeon run(s), <worlds> virtual world(s) open</gold>"
+  entry: "<gray><leader>: <players> zombies=<zombies> door=<door> finished=<finished></gray>"
+  empty: "<gray>No dungeon run, <worlds> virtual world(s) open.</gray>"
+status:
+  run: "<player>: world=<world> run=<leader> players=<players> zombies=<zombies> door=<door> finished=<finished>"
+  none: "<player>: world=<world> run=none"
+words:
+  open: "open"
+  closed: "closed"
+  "yes": "yes"
+  "no": "no"
 model:
   visit: "<gray>You stand in the dungeon model. Change it with your usual tools, then run /dungeon model capture.</gray>"
   visit-refused: "<red>The server refused the teleport to the dungeon model.</red>"
