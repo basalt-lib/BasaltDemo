@@ -42,7 +42,7 @@ public final class ExitPath implements Lifecycle {
             for (UUID member : run.members()) {
                 Player player = Bukkit.getPlayer(member);
                 if (player != null) {
-                    leave(player);
+                    leaveRun(player, Reason.WORLD_CLOSED);
                 }
             }
         }
@@ -78,7 +78,11 @@ public final class ExitPath implements Lifecycle {
     }
 
     private void leaveRun(Player player, Reason reason) {
-        RunView after = book.leave(player.getUniqueId()).orElseThrow();
+        Optional<RunView> left = book.leave(player.getUniqueId());
+        if (left.isEmpty()) {
+            return;
+        }
+        RunView after = left.get();
         Location back = returns.take(player.getUniqueId());
         switch (reason) {
             case REQUESTED -> {
