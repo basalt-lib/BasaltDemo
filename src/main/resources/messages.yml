@@ -1,0 +1,9 @@
+player:
+  needed: "<red>Name a player: the console is not one.</red>"
+model:
+  visit: "<gray>You stand in the dungeon model. Change it with your usual tools, then run /dungeon model capture.</gray>"
+  visit-refused: "<red>The server refused the teleport to the dungeon model.</red>"
+  in-run: "<red>Leave your dungeon run before you visit the model.</red>"
+  captured: "<green>Captured the dungeon model: <blocks> blocks in <time> ms. New runs use it.</green>"
+  rebuilt: "<green>Rebuilt the default dungeon model and captured it: <blocks> blocks in <time> ms.</green>"
+  failed: "<red>The dungeon model could not be captured: <reason></red>"

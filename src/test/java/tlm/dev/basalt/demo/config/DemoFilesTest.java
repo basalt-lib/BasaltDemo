@@ -53,11 +53,24 @@ class DemoFilesTest {
     }
 
     @Test
-    void theFirstReadWritesTheShippedFileAndReadsIt() throws IOException {
+    void theFirstReadWritesTheShippedFilesAndReadsThem() throws IOException {
         files.reload();
         assertEquals(SHIPPED, files.settings());
         assertEquals(List.of(), warnings);
         assertEquals(shipped("config.yml"), Files.readString(folder.resolve("config.yml")));
+        assertEquals(shipped("messages.yml"), Files.readString(folder.resolve("messages.yml")));
+        assertEquals("<red>Name a player: the console is not one.</red>", files.messages().get("player.needed"));
+    }
+
+    @Test
+    void aServerTextWinsAndAMissingOneFallsBack() throws IOException {
+        Files.writeString(folder.resolve("messages.yml"), shipped("messages.yml")
+                .replace("<red>Name a player: the console is not one.</red>", "<blue>Who?</blue>")
+                .replaceAll("(?m)^  in-run: .*\\n", ""), StandardCharsets.UTF_8);
+        files.reload();
+        assertEquals("<blue>Who?</blue>", files.messages().get("player.needed"));
+        assertEquals("<red>Leave your dungeon run before you visit the model.</red>", files.messages().get("model.in-run"));
+        assertEquals(List.of("messages.yml: model.in-run is missing, using the shipped text"), warnings);
     }
 
     @Test

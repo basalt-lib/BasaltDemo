@@ -12,6 +12,8 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.logging.Logger;
@@ -20,6 +22,7 @@ import java.util.regex.Pattern;
 public final class DemoFiles {
 
     private static final String CONFIG = "config.yml";
+    private static final String MESSAGES = "messages.yml";
     private static final Pattern WORLD_NAME = Pattern.compile("[a-z0-9_-]{1,32}");
     private static final int CHUNK_LIMIT = 100_000;
     private static final int CHUNK_SIZE = 16;
@@ -28,6 +31,7 @@ public final class DemoFiles {
     private final Function<String, InputStream> shipped;
     private final Logger logger;
     private DemoSettings settings;
+    private Map<String, String> messages;
 
     public DemoFiles(Path folder, Function<String, InputStream> shipped, Logger logger) {
         this.folder = folder;
@@ -41,6 +45,11 @@ public final class DemoFiles {
         if (serverConfig.isPresent() || settings == null) {
             settings = parse(new YamlValues(CONFIG, serverConfig.orElse(shippedConfig), shippedConfig, logger));
         }
+        YamlConfiguration shippedMessages = readShipped(MESSAGES);
+        Optional<YamlConfiguration> serverMessages = readServer(MESSAGES);
+        if (serverMessages.isPresent() || messages == null) {
+            messages = texts(shippedMessages, serverMessages.orElse(shippedMessages));
+        }
     }
 
     public DemoSettings settings() {
@@ -48,6 +57,29 @@ public final class DemoFiles {
             throw new IllegalStateException("the files are not read yet, call reload first");
         }
         return settings;
+    }
+
+    public Map<String, String> messages() {
+        if (messages == null) {
+            throw new IllegalStateException("the files are not read yet, call reload first");
+        }
+        return messages;
+    }
+
+    private Map<String, String> texts(YamlConfiguration shipped, YamlConfiguration server) {
+        Map<String, String> texts = new LinkedHashMap<>();
+        for (String key : shipped.getKeys(true)) {
+            if (!shipped.isString(key)) {
+                continue;
+            }
+            if (server.isString(key)) {
+                texts.put(key, server.getString(key));
+            } else {
+                logger.warning(MESSAGES + ": " + key + " is missing, using the shipped text");
+                texts.put(key, shipped.getString(key));
+            }
+        }
+        return Map.copyOf(texts);
     }
 
     private static DemoSettings parse(YamlValues values) {
