@@ -38,7 +38,7 @@ public final class ReturnPoints {
 
     private Location safe(Location location) {
         if (location == null || !location.isWorldLoaded() || location.getWorld().equals(host.get())) {
-            return Bukkit.getWorlds().getFirst().getSpawnLocation();
+            return Bukkit.getWorlds().getFirst().getSpawnLocation().add(0.5, 0, 0.5);
         }
         return location;
     }
