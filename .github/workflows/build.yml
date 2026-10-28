@@ -12,9 +12,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
@@ -36,7 +43,8 @@ jobs:
         working-directory: BasaltCore
       - run: ./gradlew build
         working-directory: BasaltDemo
-      - uses: actions/upload-artifact@v7
+      - if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v7
         with:
           name: BasaltDemo
           path: BasaltDemo/build/libs/BasaltDemo-*.jar
