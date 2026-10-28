@@ -115,7 +115,7 @@ class SeamTest {
     @Test
     void theBuildUsesOnlyThePublishedApi() {
         String build = read(ROOT.resolve("build.gradle.kts"));
-        assertTrue(build.contains("tlm.dev.basalt:basalt-api:"));
+        assertTrue(build.contains("io.github.basalt-lib:basalt-api:"));
         assertTrue(!build.contains("BasaltCore") && !build.contains("project("), build);
     }
 

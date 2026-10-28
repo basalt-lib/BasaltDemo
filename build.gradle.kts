@@ -10,7 +10,7 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
     mavenLocal {
         content {
-            includeGroup("tlm.dev.basalt")
+            includeGroup("io.github.basalt-lib")
         }
     }
 }
@@ -20,7 +20,7 @@ java {
 }
 
 val paperApi = "io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT"
-val basaltApi = "tlm.dev.basalt:basalt-api:0.1.0-SNAPSHOT"
+val basaltApi = "io.github.basalt-lib:basalt-api:0.1.0-SNAPSHOT"
 
 dependencies {
     compileOnly(paperApi)
