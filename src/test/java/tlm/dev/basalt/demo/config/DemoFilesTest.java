@@ -64,7 +64,7 @@ class DemoFilesTest {
 
     @Test
     void aServerTextWinsAndAMissingOneFallsBack() throws IOException {
-        Files.writeString(folder.resolve("messages.yml"), shipped("messages.yml")
+        Files.writeString(folder.resolve("messages.yml"), shippedWithLf("messages.yml")
                 .replace("<red>Name a player: the console is not one.</red>", "<blue>Who?</blue>")
                 .replaceAll("(?m)^  in-run: .*\\n", ""), StandardCharsets.UTF_8);
         files.reload();
@@ -98,7 +98,7 @@ class DemoFilesTest {
 
     @Test
     void aMissingKeyFallsBackOnTheShippedValue() throws IOException {
-        write(shipped("config.yml").replace("  max-players: 4\n", ""));
+        write(shippedWithLf("config.yml").replace("  max-players: 4\n", ""));
         files.reload();
         assertEquals(SHIPPED, files.settings());
         assertEquals(List.of("config.yml: run.max-players is missing, expected a whole number from 1 to 100, using the shipped value 4"), warnings);
@@ -151,5 +151,9 @@ class DemoFilesTest {
         try (var in = DemoFilesTest.class.getResourceAsStream("/" + name)) {
             return new String(in.readAllBytes(), StandardCharsets.UTF_8);
         }
+    }
+
+    private static String shippedWithLf(String name) throws IOException {
+        return shipped(name).replace("\r\n", "\n");
     }
 }
